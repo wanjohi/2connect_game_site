@@ -1,0 +1,41 @@
+version: '2'
+
+services:
+  game-site:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      FLASK_CONFIG: development
+      FLASK_APP: run.py
+    volumes:
+    - .:/code
+    networks:
+    - back-tier
+    entrypoint: flask run --host=0.0.0.0
+    ports:
+    - "5000:5000"
+    depends_on:
+    - db
+    restart: always
+
+  db:
+    image: mysql:5.6.41
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    networks:
+    - back-tier
+    volumes:
+    - my-datavolume:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: super-secret
+      MYSQL_USER: connect2
+      MYSQL_PASSWORD: super-secret
+      MYSQL_DATABASE: connect2
+
+volumes:
+  my-datavolume:
+
+networks:
+  back-tier:
+    driver: bridge
