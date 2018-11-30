@@ -1,9 +1,10 @@
 from flask_login import UserMixin
+from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app import db, login_manager
 
-# silly user model
+
 class User(UserMixin, db.Model):
     '''
     User model
@@ -20,6 +21,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     is_activated = db.Column(db.Boolean, default=False)
     is_admin = db.Column(db.Boolean, default=False)
+    ais = db.relationship('Ai', backref='user', lazy=True)
 
     @property
     def password(self):
@@ -49,3 +51,29 @@ class User(UserMixin, db.Model):
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
+class Ai(db.Model):
+    """
+    Ai model
+    """
+    __tablename__ = 'ais'
+
+    id = db.Column(db.Integer, primary_key=True)
+    uploaded_on = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    filename = db.Column(db.String(60), unique=True)
+
+
+
+class GameLogs(db.Model):
+    """
+    Game logs model
+    """
+    id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    is_draw = db.Column(db.Boolean, default=False)
+    ai_won_id = db.Column(db.Integer, db.ForeignKey('ais.id'), nullable=False)
+    ai_lost_id = db.Column(db.Integer, db.ForeignKey('ais.id'), nullable=False)
+    ai_won = db.relationship('GameLogs', backref='games_won', foreign_keys=[ai_won_id], lazy=True)
+    ai_lost = db.relationship('GameLogs', backref='games_lost', foreign_keys=[ai_lost_id], lazy=True)

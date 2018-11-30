@@ -25,28 +25,15 @@ def create_app(config_name):
     from app import models
 
     login_manager.init_app(app)
-    login_manager.login_view = "login"
+    login_manager.login_view = "auth.login"
 
-    @app.route("/")
-    @login_required
-    def main():
-        return render_template('index.html')
+    from .admin import admin as admin_blueprint
+    app.register_blueprint(admin_blueprint, url_prefix='/admin-stuff')
 
-    @app.route('/login', methods=['GET', 'POST'])
-    def login():
-        error = None
-        if request.method == 'POST':
-            if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-                error = 'Invalid Credentials. Please try again.'
-            else:
-                #log user in
-                return redirect(url_for('main'))
-        return render_template('login.html', error=error)
+    from .auth import auth as auth_blueprint
+    app.register_blueprint(auth_blueprint)
 
-    @app.route("/logout")
-    @login_required
-    def logout():
-        logout_user()
-        return redirect(url_for('main'))
+    from .home import home as home_blueprint
+    app.register_blueprint(home_blueprint)
 
     return app
