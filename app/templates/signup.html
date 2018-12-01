@@ -11,6 +11,7 @@
     <!-- Bulma Version 0.7.2-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
     <link rel="stylesheet" type="text/css" href="../static/css/login.css">
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 
 <body>
@@ -31,38 +32,49 @@
                         <form action="" method="post">
                             {{ form.csrf_token() }}
                             <div class="field">
+                                <label class="label">Email</label>
                                 <div class="control">
                                     {{ form.email(class_="input is-large") }}
                                 </div>
                             </div>
 
                             <div class="field">
+                                <label class="label">Ai Nickname</label>
                                 <div class="control">
                                     {{ form.username(class_="input is-large") }}
                                 </div>
                             </div>
 
                             <div class="field">
+                                <label class="label">First Name</label>
                                 <div class="control">
                                     {{ form.first_name(class_="input is-large") }}
                                 </div>
                             </div>
 
                             <div class="field">
+                                <label class="label">Last Name</label>
                                 <div class="control">
                                     {{ form.last_name(class_="input is-large") }}
                                 </div>
                             </div>
 
                             <div class="field">
+                                <label class="label">Password</label>
                                 <div class="control">
                                     {{ form.password(class_="input is-large") }}
                                 </div>
                             </div>
 
                             <div class="field">
+                                <label class="label">Confirm Password</label>
                                 <div class="control">
                                     {{ form.confirm_password(class_="input is-large") }}
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                    {{ form.recaptcha }}
                                 </div>
                             </div>
                             {{ form.submit(class_="button is-block is-info is-large is-fullwidth") }}

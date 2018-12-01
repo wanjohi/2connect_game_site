@@ -75,5 +75,6 @@ class GameLogs(db.Model):
     is_draw = db.Column(db.Boolean, default=False)
     ai_won_id = db.Column(db.Integer, db.ForeignKey('ais.id'), nullable=False)
     ai_lost_id = db.Column(db.Integer, db.ForeignKey('ais.id'), nullable=False)
-    ai_won = db.relationship('GameLogs', backref='games_won', foreign_keys=[ai_won_id], lazy=True)
-    ai_lost = db.relationship('GameLogs', backref='games_lost', foreign_keys=[ai_lost_id], lazy=True)
+    ai_won = db.relationship('Ai', backref='games_won', foreign_keys=[ai_won_id], lazy=True)
+    ai_lost = db.relationship('Ai', backref='games_lost', foreign_keys=[ai_lost_id], lazy=True)
+    log_link = db.Column(db.String(255), nullable=False)

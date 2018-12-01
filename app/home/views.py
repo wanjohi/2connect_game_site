@@ -1,15 +1,78 @@
-from flask import render_template
+from flask import render_template, request
 from flask_login import login_required, current_user
+from sqlalchemy import or_
+from . import home, helper
+from ..models import Ai, GameLogs
+from app import db
+from datetime import datetime
 
-from . import home
 
 
-
-@home.route('/')
+@home.route("/", methods=["GET", "POST"])
 @login_required
 def dashboard():
     """
     Render dashboard
     """
+    response_data = {}
 
-    return render_template('index.html', title="Dashboard", first_name=current_user.first_name)
+    # Get users AI
+    users_ai = Ai.query.filter_by(user=current_user).first()
+
+    if users_ai:
+        response_data["games_won"] = GameLogs.query.filter_by(ai_won=users_ai, is_draw=False).count()
+        response_data["games_lost"] = GameLogs.query.filter_by(ai_lost=users_ai, is_draw=False).count()
+        response_data["games_drawn"] = GameLogs.query.filter(or_(GameLogs.ai_won == users_ai, GameLogs.ai_lost == users_ai), GameLogs.is_draw == True).count()
+        response_data["last_uploaded"] = users_ai.uploaded_on.strftime("%d/%m/%y")
+
+        # Get recent games
+        response_data["recent_games"] = GameLogs.query.filter(or_(GameLogs.ai_won == users_ai, GameLogs.ai_lost == users_ai)).limit(5)
+    else:
+        response_data["games_won"] = 0
+        response_data["games_lost"] = 0
+        response_data["games_drawn"] = 0
+        response_data["last_uploaded"] = "Never"
+        response_data["recent_games"] = {}
+
+    if request.method == "POST" and "ai_file" in request.files:
+        file = request.files["ai_file"]
+
+        if file.filename == "":
+            response_data["file_message"] = "invalid file"
+        else:
+            # Send file to S3
+            filename = helper.upload_file_to_s3(file)
+            # Save new details in database
+            if filename:
+                if users_ai:
+                    users_ai.filename = filename
+                    users_ai.uploaded_on = datetime.utcnow()
+                else:
+                    users_ai = Ai(user=current_user, filename=filename)
+                    db.session.add(users_ai)
+                db.session.commit()
+                response_data["file_message"] = "uploaded Successfully!"
+
+
+
+    return render_template('index.html', title="Dashboard", first_name=current_user.first_name,
+                           response_data = response_data)
+
+
+@home.route("/rules")
+@login_required
+def rules():
+    return render_template('rules.html', title="Game Rules")
+
+
+@home.route("/game_logs")
+@login_required
+def game_logs():
+    response_data = {}
+    # Get users AI
+    users_ai = Ai.query.filter_by(user=current_user).first()
+    if users_ai:
+        # Get recent games
+        response_data["recent_games"] = GameLogs.query.filter(or_(GameLogs.ai_won == users_ai, GameLogs.ai_lost == users_ai)).limit(20)
+
+    return render_template('game_logs.html', title="My Game Logs", response_data = response_data)

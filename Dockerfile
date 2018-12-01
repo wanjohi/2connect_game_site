@@ -2,7 +2,7 @@ FROM python:3.7
 
 RUN mkdir -p /code/
 
-ADD . /code
+#ADD . /code
 
 WORKDIR /code/
 

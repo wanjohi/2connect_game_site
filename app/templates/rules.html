@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Wathii</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <!-- Bulma Version 0.7.2-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+    <link rel="stylesheet" type="text/css" href="../static/css/admin.css">
+</head>
+
+<body>
+
+    <!-- START NAV -->
+    <nav class="navbar is-white">
+        <div class="container">
+            <div class="navbar-brand">
+                <a class="navbar-item brand-text" href="../..">
+          Wathii Dashboard
+        </a>
+                <div class="navbar-burger burger" data-target="navMenu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <div id="navMenu" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="/">
+            Home
+          </a>
+                    <a class="navbar-item" href="/">
+            Standings
+          </a>
+                    <a class="navbar-item" href="/rules">
+            Rules
+          </a>
+                    <a class="navbar-item" href="/logout">
+            Log out
+          </a>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+    <!-- END NAV -->
+    <div class="container">
+        <div class="columns">
+            <div class="column is-12">
+               <div class="card">
+                            <header class="card-header">
+                                <p class="card-header-title">
+                                    Game Rules
+                                </p>
+                            </header>
+                            <div class="card-table">
+                                <div class="content">
+                                    <table class="table is-fullwidth is-striped">
+                                        <tbody>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-gavel"></i></td>
+                                                <td width="95%">The board is 10 columns by 8 rows.</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-gavel"></i></td>
+                                                <td width="95%">Your executable file must be name: my_ai</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-gavel"></i></td>
+                                                <td width="95%">The game framework will execute your executable providing your player color and board layout as a comma separated string. e.g:
+                                                <p>/path/to/my_ai r .,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,b,.,.,.,.,.,.,.,.,.,b,.,g,.,.,.,g,g,.,.,g,g,g,.,g</p></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-gavel"></i></td>
+                                                <td width="95%">To play a move, output the color you want to play, followed by a comma, then the column you want to play (1 to 10). e.g. r,3</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-gavel"></i></td>
+                                                <td width="95%">The game framework lets you output anything so as to store it in the log. However, the last line your ai outputs must be the move to play. e.g.
+                                                <p> ai output: random stuff</p>
+                                                <p> more random stuff</p>
+                                                <p>r,3</p></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-gavel"></i></td>
+                                                <td width="95%">The following characters represent:
+                                                <p> Period (.) : Represents an empty spot on the board</p>
+                                                <p> Blue (b) : Represents a blue piece on the board</p>
+                                                <p> Red (r) : Represents a red piece on the board</p>
+                                                <p> Green (g) : Represents a green piece on the board</p></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-gavel"></i></td>
+                                                <td width="95%">Each AI has 3 seconds to play a move, or it will forfeit the game.</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-gavel"></i></td>
+                                                <td width="95%">Your AI can play either the color provided by the game framework, or Green (g). Playing any other color will result in a forfeit</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+            </div>
+        </div>
+    </div>
+    <script async type="text/javascript" src="../static/js/bulma.js"></script>
+</body>
+
+</html>
