@@ -124,12 +124,6 @@
                                                 <td><a class="button is-small is-primary" href="{{ game.log_link }}" >Download Log </a></td>
                                             </tr>
                                         {% endfor %}
-                                        {% if response_data["recent_games"].count() == 0 %}
-                                            <tr>
-                                                <td width="5%"><i class="fa fa-trophy"></i></td>
-                                                <td width="70%">No games played yet</td>
-                                            </tr>
-                                        {% endif %}
                                         </tbody>
                                     </table>
                                 </div>

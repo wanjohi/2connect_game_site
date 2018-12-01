@@ -12,23 +12,27 @@ def register():
     """
     Add an User to the database
     """
+    error = None
     form = RegistrationForm()
-    if form.validate_on_submit():
-        user = User(email=form.email.data,
-                            username=form.username.data,
-                            first_name=form.first_name.data,
-                            last_name=form.last_name.data,
-                            password=form.password.data)
+    if request.method == "POST":
+        if form.validate_on_submit():
+            user = User(email=form.email.data,
+                                username=form.username.data,
+                                first_name=form.first_name.data,
+                                last_name=form.last_name.data,
+                                password=form.password.data)
 
-        # add user to the database
-        db.session.add(user)
-        db.session.commit()
+            # add user to the database
+            db.session.add(user)
+            db.session.commit()
 
-        # redirect to the login page
-        return redirect(url_for("auth.login"))
+            # redirect to the login page
+            return redirect(url_for("auth.login"))
+        else:
+            error = "You have entered invalid data. Special characters are not permitted."
 
     # load registration template
-    return render_template("signup.html", form=form, title="Register")
+    return render_template("signup.html", form=form, title="Register", error=error)
 
 
 @auth.route("/login", methods=["GET", "POST"])
@@ -38,20 +42,23 @@ def login():
     """
     error = None
     form = LoginForm()
-    if form.validate_on_submit():
+    if request.method == "POST":
+        if form.validate_on_submit():
 
-        # check whether user exists in the database and whether
-        # the password entered matches the password in the database
-        user = User.query.filter_by(email=form.email.data).first()
-        if user is not None and user.verify_password(
-                form.password.data):
-            # log user in
-            login_user(user)
+            # check whether user exists in the database and whether
+            # the password entered matches the password in the database
+            user = User.query.filter_by(email=form.email.data).first()
+            if user is not None and user.verify_password(
+                    form.password.data):
+                # log user in
+                login_user(user)
 
-            # redirect to the dashboard page after login
-            return redirect(url_for("home.dashboard"))
+                # redirect to the dashboard page after login
+                return redirect(url_for("home.dashboard"))
 
-        # when login details are incorrect
+            # when login details are incorrect
+            else:
+                error = "Invalid email or password."
         else:
             error = "Invalid email or password."
 

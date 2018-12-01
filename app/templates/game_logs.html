@@ -73,16 +73,10 @@
                                             {% for game in response_data["recent_games"] %}
                                             <tr>
                                                 <td width="5%"><i class="fa fa-trophy"></i></td>
-                                                <td width="70%">{{ game.ai_won.user.username }} (winner)  <b>VS</b>  {{ game.ai_lost.user.username }} (loser)</td>
+                                                <td width="70%">{{ game.ai_won.user.username }} (winner)  <b>VS</b>  {{ game.ai_lost.user.username }} (loser)
                                                 <td><a class="button is-small is-primary" href="{{ game.log_link }}">Download Log</a></td>
                                             </tr>
                                         {% endfor %}
-                                        {% if response_data["recent_games"].count() == 0 %}
-                                            <tr>
-                                                <td width="5%"><i class="fa fa-trophy"></i></td>
-                                                <td width="70%">No games played yet</td>
-                                            </tr>
-                                        {% endif %}
                                         </tbody>
                                     </table>
                                 </div>
