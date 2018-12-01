@@ -66,7 +66,7 @@ class Ai(db.Model):
 
 
 
-class GameLogs(db.Model):
+class GameLog(db.Model):
     """
     Game logs model
     """

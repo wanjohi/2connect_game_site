@@ -1,4 +1,4 @@
-from instance.config import S3_KEY, S3_SECRET, S3_LOCATION, S3_BUCKET
+from instance.config import S3_KEY, S3_SECRET, S3_BUCKET
 import boto3
 
 # S3 initialization
@@ -8,9 +8,9 @@ s3 = boto3.client(
    aws_secret_access_key=S3_SECRET
 )
 
-def upload_file_to_s3(file):
+def upload_file_to_s3(file, file_name):
 
-    file_path = "ais/" + file.filename
+    file_path = "ais/" + file_name + "." + file.filename.split('.')[-1]
 
     try:
 

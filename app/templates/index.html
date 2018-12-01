@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
     <!-- Bulma Version 0.7.2-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
-    <link rel="stylesheet" type="text/css" href="../static/css/admin.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/index.css">
 </head>
 
 <body>
@@ -127,6 +127,12 @@
                                                 <td><a class="button is-small is-primary" href="{{ game.log_link }}" >Download Log </a></td>
                                             </tr>
                                         {% endfor %}
+                                        {% if response_data["recent_games"].count() == 0 %}
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-trophy"></i></td>
+                                                <td width="70%">No games played yet</td>
+                                            </tr>
+                                        {% endif %}
                                         </tbody>
                                     </table>
                                 </div>

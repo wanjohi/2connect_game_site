@@ -118,3 +118,6 @@ dmypy.json
 
 # Flask
 instance/*
+
+# Zappa
+zappa_*

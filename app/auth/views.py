@@ -7,7 +7,7 @@ from .. import db
 from ..models import User
 
 
-@auth.route('/signup', methods=['GET', 'POST'])
+@auth.route("/signup", methods=["GET", "POST"])
 def register():
     """
     Add an User to the database
@@ -25,13 +25,13 @@ def register():
         db.session.commit()
 
         # redirect to the login page
-        return redirect(url_for('auth.login'))
+        return redirect(url_for("auth.login"))
 
     # load registration template
-    return render_template('signup.html', form=form, title='Register')
+    return render_template("signup.html", form=form, title="Register")
 
 
-@auth.route('/login', methods=['GET', 'POST'])
+@auth.route("/login", methods=["GET", "POST"])
 def login():
     """
     Handle requests to the /login route
@@ -49,17 +49,17 @@ def login():
             login_user(user)
 
             # redirect to the dashboard page after login
-            return redirect(url_for('home.dashboard'))
+            return redirect(url_for("home.dashboard"))
 
         # when login details are incorrect
         else:
-            error = 'Invalid email or password.'
+            error = "Invalid email or password."
 
     # load login template
-    return render_template('login.html', form=form, title='Login', error=error)
+    return render_template("login.html", form=form, title="Login", error=error)
 
 
-@auth.route('/logout')
+@auth.route("/logout")
 @login_required
 def logout():
     """
@@ -69,4 +69,4 @@ def logout():
     logout_user()
 
     # redirect to the login page
-    return redirect(url_for('auth.login'))
+    return redirect(url_for("auth.login"))
