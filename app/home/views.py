@@ -41,15 +41,15 @@ def dashboard():
             response_data["file_message"] = "invalid file"
         else:
             # Send file to S3
-            s3_filename = str(current_user.id) + "_" + current_user.username
+            s3_filename = str(current_user.id) + "_" + current_user.username + "." + file.filename.split('.')[-1]
             filename = helper.upload_file_to_s3(file, s3_filename)
             # Save new details in database
             if filename:
                 if users_ai:
-                    users_ai.filename = filename
+                    users_ai.filename = s3_filename
                     users_ai.uploaded_on = datetime.utcnow()
                 else:
-                    users_ai = Ai(user=current_user, filename=filename)
+                    users_ai = Ai(user=current_user, filename=s3_filename)
                     db.session.add(users_ai)
                 db.session.commit()
                 response_data["file_message"] = "uploaded Successfully!"

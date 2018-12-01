@@ -10,7 +10,7 @@ s3 = boto3.client(
 
 def upload_file_to_s3(file, file_name):
 
-    file_path = "ais/" + file_name + "." + file.filename.split('.')[-1]
+    file_path = "ais/" + file_name
 
     try:
 
