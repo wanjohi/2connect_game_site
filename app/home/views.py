@@ -26,7 +26,8 @@ def dashboard():
         response_data["last_uploaded"] = users_ai.uploaded_on.strftime("%d/%m/%y")
 
         # Get recent games
-        response_data["recent_games"] = GameLog.query.filter(or_(GameLog.ai_won == users_ai, GameLog.ai_lost == users_ai)).limit(5)
+        response_data["recent_games"] = GameLog.query.filter(or_(GameLog.ai_won == users_ai,
+                                                                 GameLog.ai_lost == users_ai)).order_by(GameLog.timestamp.desc()).limit(5)
     else:
         response_data["games_won"] = 0
         response_data["games_lost"] = 0
@@ -74,6 +75,7 @@ def game_logs():
     users_ai = Ai.query.filter_by(user=current_user).first()
     if users_ai:
         # Get recent games
-        response_data["recent_games"] = GameLog.query.filter(or_(GameLog.ai_won == users_ai, GameLog.ai_lost == users_ai)).limit(20)
+        response_data["recent_games"] = GameLog.query.filter(or_(GameLog.ai_won == users_ai,
+                                                                 GameLog.ai_lost == users_ai)).order_by(GameLog.timestamp.desc()).limit(20)
 
     return render_template("game_logs.html", title="My Game Logs", response_data = response_data)

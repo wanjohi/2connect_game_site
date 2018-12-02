@@ -68,18 +68,36 @@
                <div class="card">
                             <header class="card-header">
                                 <p class="card-header-title">
-                                    My Game Logs
+                                    Current Users
                                 </p>
                             </header>
                             <div class="card-table">
                                 <div class="content">
                                     <table class="table is-fullwidth is-striped">
-                                        <tbody>
-                                            {% for game in response_data["recent_games"] %}
+                                        <thead>
                                             <tr>
-                                                <td width="5%"><i class="fa fa-trophy"></i></td>
-                                                <td width="70%">{{ game.ai_won.user.username }} (winner)  <b>VS</b>  {{ game.ai_lost.user.username }} (loser)
-                                                <td><a class="button is-small is-primary" href="{{ game.log_link }}">Download Log</a></td>
+                                                <th> </th>
+                                                <th>First Name</th>
+                                                <th>Last Name</th>
+                                                <th>AI Name</th>
+                                                <th>Email</th>
+                                                <th> </th>
+                                                <th> </th>
+                                            </tr>
+                                          </thead>
+                                        <tbody>
+                                            {% for user in response_data["users"] %}
+                                            <tr>
+                                                <form action="" method="POST">
+                                                    <input type="hidden" id="userId" name="userId" value="{{ user.id }}">
+                                                    <td width="5%"><i class="fa fa-trophy"></i></td>
+                                                    <td>{{ user.first_name }} {{ user.id }}</td>
+                                                    <td> {{ user.last_name }} </td>
+                                                    <td> {{ user.username }} </td>
+                                                    <td> {{ user.email }} </td>
+                                                    <td><input class="button is-small is-primary" name="action" type="submit" value="Make Admin"></td>
+                                                    <td><input class="button is-small is-danger"  name="action" type="submit" value="Delete"></td>
+                                                </form>
                                             </tr>
                                         {% endfor %}
                                         </tbody>
