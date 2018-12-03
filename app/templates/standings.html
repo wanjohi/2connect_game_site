@@ -52,34 +52,31 @@
     <!-- END NAV -->
     <div class="container">
         <div class="columns">
-            <div class="column is-3 ">
-                <aside class="menu is-hidden-mobile">
-                    <p class="menu-label">
-                        General
-                    </p>
-                    <ul class="menu-list">
-                        <li><a href="/">Dashboard</a></li>
-                        <li><a class="is-active" href="/game_logs">Your Game logs</a></li>
-                    </ul>
-
-                </aside>
-            </div>
-            <div class="column is-9">
+            <div class="column is-12">
                <div class="card">
                             <header class="card-header">
                                 <p class="card-header-title">
-                                    My Game Logs
+                                    Standings
                                 </p>
                             </header>
                             <div class="card-table">
                                 <div class="content">
                                     <table class="table is-fullwidth is-striped">
-                                        <tbody>
-                                            {% for game in response_data["recent_games"] %}
+                                        <thead>
                                             <tr>
-                                                <td width="5%"><i class="fa fa-trophy"></i></td>
-                                                <td width="70%">{{ game.ai_won.user.username }} (winner)  <b>VS</b>  {{ game.ai_lost.user.username }} (loser)
-                                                <td><a class="button is-small is-primary" href="{{ game.log_link }}">Download Log</a></td>
+                                                <th>AI Name</th>
+                                                <th>Wins</th>
+                                                <th>Draws</th>
+                                                <th>Losses</th>
+                                            </tr>
+                                          </thead>
+                                        <tbody>
+                                            {% for ai in ai_list %}
+                                            <tr>
+                                                <td> {{ ai.name }} </td>
+                                                <td> {{ ai.wins }} </td>
+                                                <td> {{ ai.draws }} </td>
+                                                <td> {{ ai.losses }} </td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>

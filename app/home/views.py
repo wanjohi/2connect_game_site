@@ -1,8 +1,8 @@
 from flask import render_template, request
 from flask_login import login_required, current_user
-from sqlalchemy import or_
+from sqlalchemy import or_, func
 from . import home, helper
-from ..models import Ai, GameLog
+from ..models import Ai, GameLog, User
 from app import db
 from datetime import datetime
 
@@ -79,3 +79,21 @@ def game_logs():
                                                                  GameLog.ai_lost == users_ai)).order_by(GameLog.timestamp.desc()).limit(20)
 
     return render_template("game_logs.html", title="My Game Logs", response_data = response_data)
+
+@home.route("/standings")
+@login_required
+def standings():
+
+    sql = "SELECT t2.id as id, t1.username as name FROM users t1 LEFT JOIN ais t2 ON t2.user_id = t1.id"
+
+    sql2 = "SELECT s1.*, COUNT(s2.ai_won_id) as wins, COUNT(s2.ai_lost_id) as losses FROM (" + sql + \
+           ")s1 LEFT JOIN (SELECT * FROM game_log WHERE is_draw = FALSE)s2 ON s1.id = s2.ai_won_id OR " \
+           "s1.id = s2.ai_lost_id GROUP BY name"
+
+    sql3 = "SELECT v1.name as name, v1.wins as wins, v1.losses as losses, COUNT(v2.id) as draws FROM (" + \
+        sql2 + ")v1 LEFT JOIN (SELECT * FROM game_log WHERE is_draw = TRUE) v2 ON v1.id = v2.ai_won_id OR " \
+               "v1.id = v2.ai_lost_id GROUP BY name ORDER BY wins DESC, draws DESC, losses ASC"
+
+    ai_list = db.engine.execute(sql3)
+
+    return render_template("standings.html", title="Standings", ai_list=ai_list)
