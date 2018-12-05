@@ -72,12 +72,14 @@
                                           </thead>
                                         <tbody>
                                             {% for ai in ai_list %}
+                                            
                                             <tr>
-                                                <td> {{ ai.name }} </td>
-                                                <td> {{ ai.wins }} </td>
-                                                <td> {{ ai.draws }} </td>
-                                                <td> {{ ai.losses }} </td>
+                                                <td>{% if ai.id == my_ai %}<b>{% endif %} {{ ai.name }}</td>
+                                                <td>{% if ai.id == my_ai %}<b>{% endif %} {{ ai.wins }} </td>
+                                                <td>{% if ai.id == my_ai %}<b>{% endif %} {{ ai.draws }} </td>
+                                                <td>{% if ai.id == my_ai %}<b>{% endif %} {{ ai.losses }} </td>
                                             </tr>
+                                            
                                         {% endfor %}
                                         </tbody>
                                     </table>
