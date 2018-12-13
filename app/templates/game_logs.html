@@ -68,7 +68,7 @@
                <div class="card">
                             <header class="card-header">
                                 <p class="card-header-title">
-                                    My Game Logs
+                                    My Game Logs (UTC timestamps)
                                 </p>
                             </header>
                             <div class="card-table">
@@ -77,8 +77,8 @@
                                         <tbody>
                                             {% for game in response_data["recent_games"] %}
                                             <tr>
-                                                <td width="5%"><i class="fa fa-trophy"></i></td>
-                                                <td width="70%">{{ game.ai_won.user.username }} (winner)  <b>VS</b>  {{ game.ai_lost.user.username }} (loser)
+                                                <td>{{ game.timestamp }}</td>
+                                                <td>{{ game.ai_won.user.username }} (winner)  <b>VS</b>  {{ game.ai_lost.user.username }} (loser)
                                                 <td><a class="button is-small is-primary" href="{{ game.log_link }}">Download Log</a></td>
                                             </tr>
                                         {% endfor %}

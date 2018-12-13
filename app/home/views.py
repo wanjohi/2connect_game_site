@@ -4,7 +4,7 @@ from sqlalchemy import or_, func
 from . import home, helper
 from ..models import Ai, GameLog, User
 from app import db
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 
@@ -15,6 +15,8 @@ def dashboard():
     Render dashboard
     """
     response_data = {}
+
+    one_month_ago = datetime.utcnow() - timedelta(weeks=4)
 
     # Get users AI
     users_ai = Ai.query.filter_by(user=current_user).first()
@@ -27,7 +29,7 @@ def dashboard():
 
         # Get recent games
         response_data["recent_games"] = GameLog.query.filter(or_(GameLog.ai_won == users_ai,
-                                                                 GameLog.ai_lost == users_ai)).order_by(GameLog.timestamp.desc()).limit(5)
+                                                                 GameLog.ai_lost == users_ai),GameLog.timestamp > one_month_ago).order_by(GameLog.timestamp.desc()).limit(5)
     else:
         response_data["games_won"] = 0
         response_data["games_lost"] = 0
@@ -73,10 +75,11 @@ def game_logs():
     response_data = {}
     # Get users AI
     users_ai = Ai.query.filter_by(user=current_user).first()
+    one_month_ago = datetime.utcnow() - timedelta(weeks=4)
     if users_ai:
         # Get recent games
         response_data["recent_games"] = GameLog.query.filter(or_(GameLog.ai_won == users_ai,
-                                                                 GameLog.ai_lost == users_ai)).order_by(GameLog.timestamp.desc()).limit(20)
+                                                                 GameLog.ai_lost == users_ai),GameLog.timestamp > one_month_ago).order_by(GameLog.timestamp.desc())
 
     return render_template("game_logs.html", title="My Game Logs", response_data = response_data)
 
